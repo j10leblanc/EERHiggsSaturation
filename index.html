@@ -2,11 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>EER: Higgs Saturation & Capacity-Friction Mass Model</title>
+    <title>EER: Advanced Higgs-Saturation & Capacity-Friction Model</title>
     <style>
         body {
             margin: 0;
-            background-color: #05070b;
+            background-color: #030508;
             color: #c9d1d9;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             overflow: hidden;
@@ -24,30 +24,33 @@
             position: absolute;
             bottom: 20px;
             left: 20px;
-            max-width: 440px;
-            background: rgba(13, 17, 23, 0.9);
+            width: 420px;
+            background: rgba(13, 17, 23, 0.92);
             border: 1px solid #30363d;
             padding: 14px 18px;
             border-radius: 8px;
             font-size: 12px;
             line-height: 1.4;
             pointer-events: none;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
         }
-        .highlight { color: #d2a8ff; font-weight: bold; display: block; margin-bottom: 6px; font-size: 13px; }
-        .heuristic-note { color: #8b949e; font-style: italic; border-top: 1px solid #21262d; padding-top: 6px; margin-top: 6px; }
+        .highlight { color: #33ff88; font-weight: bold; display: block; margin-bottom: 6px; font-size: 13px; }
+        .telemetry { font-family: monospace; color: #58a6ff; margin-top: 6px; display: block; }
+        .heuristic-note { color: #8b949e; font-style: italic; border-top: 1px solid #21262d; paddingTop: 6px; marginTop: 6px; }
     </style>
 </head>
 <body>
 
     <div id="info">
         <h2>Entanglement-Entropy Relativity (EER)</h2>
-        <p>Substrate Saturation & Inertial Mass via Capacity Friction ($\sigma_{LB}$)</p>
+        <p>Substrate Saturation & Inertial Mass via Capacity Friction ($\sigma$)</p>
     </div>
 
     <div id="status-panel">
-        <span id="phaseStep" class="highlight">1. Fluid Substrate: Low-Friction Capacity State</span>
+        <span id="phaseStep" class="highlight">1. Unconstrained Substrate: Fluid capacity exchange</span>
+        <span id="telemetryData" class="telemetry">Strain (Υ): 0.05 | Friction (σ): 0.00 | Drag: 0.00</span>
         <div class="heuristic-note">
-            <strong>EER Mechanism:</strong> "Mass" is modeled as topological capacity friction rather than scalar field drag. Phase-locking forces coordinate cells against the LeBlanc Bound ($\sigma_{LB}$), inducing inertial resistance.
+            <strong>EER Mechanism:</strong> "Mass" emerges as topological capacity friction against saturated lattice cells, avoiding continuous scalar field assumptions.
         </div>
     </div>
 
@@ -58,7 +61,7 @@
 <script>
 // Scene Setup
 const scene = new THREE.Scene();
-scene.fog = new THREE.FogExp2(0x05070b, 0.035);
+scene.fog = new THREE.FogExp2(0x030508, 0.035);
 
 const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
 camera.position.set(0, 16, 22);
@@ -73,36 +76,47 @@ controls.enableDamping = true;
 controls.dampingFactor = 0.05;
 
 // Lighting
-const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
+const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
 scene.add(ambientLight);
 
-const pointLight = new THREE.PointLight(0x58a6ff, 2, 50);
+const pointLight = new THREE.PointLight(0x33ff88, 2.5, 50);
 pointLight.position.set(0, 12, 0);
 scene.add(pointLight);
 
-// 1. Dynamic Deformable Pseudomanifold Grid (Bright Neon Green Substrate)
+// 1. Dynamic Deformable Pseudomanifold Grid (High-Visibility Neon Substrate)
 const gridDim = 20;
-const planeGeo = new THREE.PlaneGeometry(gridDim, gridDim, 24, 24);
+const planeGeo = new THREE.PlaneGeometry(gridDim, gridDim, 32, 32);
 planeGeo.rotateX(-Math.PI / 2);
 
 const planeMat = new THREE.MeshStandardMaterial({
-    color: 0x0a2614,
-    emissive: 0x33ff88,
-    emissiveIntensity: 0.6,
+    color: 0x05140a,
+    emissive: 0x22ee77,
+    emissiveIntensity: 0.7,
     wireframe: true,
     side: THREE.DoubleSide
 });
 const deformableGrid = new THREE.Mesh(planeGeo, planeMat);
 scene.add(deformableGrid);
 
-// 2. Topological Defect Node (Particle Traversing Substrate)
-const nodeGeo = new THREE.SphereGeometry(0.6, 32, 32);
-const nodeMat = new THREE.MeshStandardMaterial({ color: 0x79c0ff, emissive: 0x79c0ff, emissiveIntensity: 0.6 });
+// 2. Topological Defect Node
+const nodeGeo = new THREE.SphereGeometry(0.65, 32, 32);
+const nodeMat = new THREE.MeshStandardMaterial({ color: 0x79c0ff, emissive: 0x79c0ff, emissiveIntensity: 0.8 });
 const defectNode = new THREE.Mesh(nodeGeo, nodeMat);
 scene.add(defectNode);
 
-// 3. Orthogonal Bulk Relief Vent ($\Upsilon$ leakage)
-const ventGeo = new THREE.CylinderGeometry(0.06, 0.2, 5, 16);
+// 3. Concentric Capacity-Friction Wave Rings
+const rings = [];
+const ringGeo = new THREE.RingGeometry(0.1, 0.2, 32);
+ringGeo.rotateX(-Math.PI / 2);
+for (let i = 0; i < 3; i++) {
+    const ringMat = new THREE.MeshBasicMaterial({ color: 0xffa657, transparent: true, opacity: 0.0, side: THREE.DoubleSide });
+    const ring = new THREE.Mesh(ringGeo, ringMat);
+    scene.add(ring);
+    rings.push({ mesh: ring, offset: i * 0.7 });
+}
+
+// 4. Orthogonal Bulk Relief Vent ($\Upsilon$ leakage)
+const ventGeo = new THREE.CylinderGeometry(0.08, 0.25, 6, 16);
 const ventMat = new THREE.MeshBasicMaterial({ color: 0xd2a8ff, transparent: true, opacity: 0.0 });
 const bulkVent = new THREE.Mesh(ventGeo, ventMat);
 scene.add(bulkVent);
@@ -110,6 +124,7 @@ scene.add(bulkVent);
 // Simulation Engine State
 let clock = 0;
 const statusText = document.getElementById('phaseStep');
+const telemetryText = document.getElementById('telemetryData');
 const posAttribute = planeGeo.attributes.position;
 const initialY = [];
 for (let i = 0; i < posAttribute.count; i++) {
@@ -121,47 +136,77 @@ function animate() {
     clock += 0.012;
     let cycle = clock % 10.0;
 
-    let nodeX = Math.sin(clock * 0.8) * 6.0;
-    let nodeZ = Math.cos(clock * 0.5) * 4.0;
+    let nodeX = Math.sin(clock * 0.8) * 5.5;
+    let nodeZ = Math.cos(clock * 0.5) * 3.5;
     defectNode.position.set(nodeX, 0, nodeZ);
-    bulkVent.position.set(nodeX, 2.5, nodeZ);
+    bulkVent.position.set(nodeX, 3.0, nodeZ);
 
     let saturationLevel = 0.0;
+    let currentStrain = 0.05;
+    let currentFriction = 0.0;
 
     if (cycle < 3.0) {
-        statusText.innerText = "1. Unconstrained Substrate: Fluid capacity exchange (Zero inertial drag)";
+        statusText.innerText = "1. Unconstrained Substrate: Fluid capacity exchange";
         nodeMat.color.setHex(0x79c0ff);
         nodeMat.emissive.setHex(0x79c0ff);
+        planeMat.emissive.setHex(0x22ee77);
+        planeMat.emissiveIntensity = 0.5;
         ventMat.opacity = 0.0;
         saturationLevel = 0.1;
+        currentStrain = 0.08;
+        currentFriction = 0.02;
+        rings.forEach(r => r.mesh.material.opacity = 0);
     } 
     else if (cycle < 5.0) {
-        statusText.innerText = "2. Substrate Phase-Locking: Local capacity saturation building";
+        statusText.innerText = "2. Phase-Locking: Capacity approaching LeBlanc Bound (σ_LB)";
         nodeMat.color.setHex(0xff7b72);
         nodeMat.emissive.setHex(0xff7b72);
-        ventMat.opacity = 0.4;
-        saturationLevel = 0.5;
+        planeMat.emissive.setHex(0xffcc00);
+        planeMat.emissiveIntensity = 0.9;
+        ventMat.opacity = 0.5;
+        saturationLevel = 0.6;
+        currentStrain = 0.74;
+        currentFriction = 0.55;
     } 
     else if (cycle < 8.5) {
-        statusText.innerText = "3. Saturated Lattice: High capacity friction (Inertial mass active & bulk venting)";
+        statusText.innerText = "3. Saturated Lattice: High capacity friction & inertial mass active";
         nodeMat.color.setHex(0xffa657);
         nodeMat.emissive.setHex(0xffa657);
-        ventMat.opacity = 0.8;
-        saturationLevel = 1.0;
+        planeMat.emissive.setHex(0xff3344);
+        planeMat.emissiveIntensity = 1.2;
+        ventMat.opacity = 0.9;
+        saturationLevel = 1.2;
+        currentStrain = 0.99;
+        currentFriction = 0.94;
+
+        // Animate friction rings pulsing outward
+        rings.forEach((r, idx) => {
+            let ringProgress = ((clock * 1.5 + r.offset) % 2.0);
+            r.mesh.position.set(nodeX, 0.05, nodeZ);
+            r.mesh.scale.set(ringProgress * 3.5, ringProgress * 3.5, 1);
+            r.mesh.material.opacity = Math.max(0, 1.0 - (ringProgress / 2.0));
+        });
     } 
     else {
-        statusText.innerText = "4. Lattice Relaxation: Capacity strain bleeding into bulk";
+        statusText.innerText = "4. Lattice Relaxation: Capacity bleeding into bulk";
         ventMat.opacity = 0.2;
         saturationLevel = 0.2;
+        currentStrain = 0.25;
+        currentFriction = 0.10;
+        planeMat.emissive.setHex(0x22ee77);
+        planeMat.emissiveIntensity = 0.6;
+        rings.forEach(r => r.mesh.material.opacity = 0);
     }
 
-    // Deform the grid vertices dynamically around the defect node
+    telemetryText.innerText = `Strain (Υ): ${currentStrain.toFixed(2)} | Friction (σ): ${currentFriction.toFixed(2)} | Saturation: ${(saturationLevel * 83).toFixed(1)}%`;
+
+    // Deform grid vertices dynamically around the defect node
     for (let i = 0; i < posAttribute.count; i++) {
         let vx = posAttribute.getX(i);
         let vz = posAttribute.getZ(i);
         
         let dist = Math.sqrt(Math.pow(vx - nodeX, 2) + Math.pow(vz - nodeZ, 2));
-        let deformation = Math.max(0, (2.5 - dist)) * saturationLevel * 0.8;
+        let deformation = Math.max(0, (2.8 - dist)) * saturationLevel * 0.9;
         
         posAttribute.setY(i, initialY[i] - deformation);
     }
