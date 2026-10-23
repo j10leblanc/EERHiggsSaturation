@@ -73,22 +73,22 @@ controls.enableDamping = true;
 controls.dampingFactor = 0.05;
 
 // Lighting
-const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
 scene.add(ambientLight);
 
 const pointLight = new THREE.PointLight(0x58a6ff, 2, 50);
 pointLight.position.set(0, 12, 0);
 scene.add(pointLight);
 
-// 1. Dynamic Deformable Pseudomanifold Grid (Bright Green Substrate)
+// 1. Dynamic Deformable Pseudomanifold Grid (Bright Neon Green Substrate)
 const gridDim = 20;
 const planeGeo = new THREE.PlaneGeometry(gridDim, gridDim, 24, 24);
 planeGeo.rotateX(-Math.PI / 2);
 
 const planeMat = new THREE.MeshStandardMaterial({
-    color: 0x050f08,
-    emissive: 0x00ff66,
-    emissiveIntensity: 0.25,
+    color: 0x0a2614,
+    emissive: 0x33ff88,
+    emissiveIntensity: 0.6,
     wireframe: true,
     side: THREE.DoubleSide
 });
@@ -97,7 +97,7 @@ scene.add(deformableGrid);
 
 // 2. Topological Defect Node (Particle Traversing Substrate)
 const nodeGeo = new THREE.SphereGeometry(0.6, 32, 32);
-const nodeMat = new THREE.MeshStandardMaterial({ color: 0x79c0ff, emissive: 0x79c0ff, emissiveIntensity: 0.5 });
+const nodeMat = new THREE.MeshStandardMaterial({ color: 0x79c0ff, emissive: 0x79c0ff, emissiveIntensity: 0.6 });
 const defectNode = new THREE.Mesh(nodeGeo, nodeMat);
 scene.add(defectNode);
 
