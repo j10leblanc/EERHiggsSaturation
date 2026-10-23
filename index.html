@@ -80,15 +80,15 @@ const pointLight = new THREE.PointLight(0x58a6ff, 2, 50);
 pointLight.position.set(0, 12, 0);
 scene.add(pointLight);
 
-// 1. Dynamic Deformable Pseudomanifold Grid (Planar Action Space)
+// 1. Dynamic Deformable Pseudomanifold Grid (Bright Green Substrate)
 const gridDim = 20;
 const planeGeo = new THREE.PlaneGeometry(gridDim, gridDim, 24, 24);
 planeGeo.rotateX(-Math.PI / 2);
 
 const planeMat = new THREE.MeshStandardMaterial({
-    color: 0x0d1117,
-    emissive: 0x1f6feb,
-    emissiveIntensity: 0.15,
+    color: 0x050f08,
+    emissive: 0x00ff66,
+    emissiveIntensity: 0.25,
     wireframe: true,
     side: THREE.DoubleSide
 });
@@ -111,7 +111,6 @@ scene.add(bulkVent);
 let clock = 0;
 const statusText = document.getElementById('phaseStep');
 const posAttribute = planeGeo.attributes.position;
-// Store original baseline vertex heights
 const initialY = [];
 for (let i = 0; i < posAttribute.count; i++) {
     initialY.push(posAttribute.getY(i));
@@ -120,7 +119,7 @@ for (let i = 0; i < posAttribute.count; i++) {
 function animate() {
     requestAnimationFrame(animate);
     clock += 0.012;
-    let cycle = clock % 10.0; // 10-second complete phase-locking cycle
+    let cycle = clock % 10.0;
 
     let nodeX = Math.sin(clock * 0.8) * 6.0;
     let nodeZ = Math.cos(clock * 0.5) * 4.0;
@@ -130,7 +129,6 @@ function animate() {
     let saturationLevel = 0.0;
 
     if (cycle < 3.0) {
-        // PHASE 1: Fluid Substrate (Zero/Low Capacity Friction - Massless regime)
         statusText.innerText = "1. Unconstrained Substrate: Fluid capacity exchange (Zero inertial drag)";
         nodeMat.color.setHex(0x79c0ff);
         nodeMat.emissive.setHex(0x79c0ff);
@@ -138,7 +136,6 @@ function animate() {
         saturationLevel = 0.1;
     } 
     else if (cycle < 5.0) {
-        // PHASE 2: Phase-Locking Transition (Approaching LeBlanc Bound σ_LB)
         statusText.innerText = "2. Substrate Phase-Locking: Local capacity saturation building";
         nodeMat.color.setHex(0xff7b72);
         nodeMat.emissive.setHex(0xff7b72);
@@ -146,7 +143,6 @@ function animate() {
         saturationLevel = 0.5;
     } 
     else if (cycle < 8.5) {
-        // PHASE 3: Saturated Lattice (High Capacity Friction -> Inertial Mass Acquired)
         statusText.innerText = "3. Saturated Lattice: High capacity friction (Inertial mass active & bulk venting)";
         nodeMat.color.setHex(0xffa657);
         nodeMat.emissive.setHex(0xffa657);
@@ -154,13 +150,12 @@ function animate() {
         saturationLevel = 1.0;
     } 
     else {
-        // PHASE 4: Relaxation back to baseline fluidity
         statusText.innerText = "4. Lattice Relaxation: Capacity strain bleeding into bulk";
         ventMat.opacity = 0.2;
         saturationLevel = 0.2;
     }
 
-    // Deform the 2D pseudomanifold grid vertices dynamically around the defect node
+    // Deform the grid vertices dynamically around the defect node
     for (let i = 0; i < posAttribute.count; i++) {
         let vx = posAttribute.getX(i);
         let vz = posAttribute.getZ(i);
